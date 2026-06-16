@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import { collection, addDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
+import { addItem } from '../services/taskService';
 
 export const InventoryActions: React.FC = () => {
   const [name, setName] = useState('');
   const [qty, setQty] = useState(0);
 
-  // Function to ADD a brand new item
-  const handleAddItem = async (e: React.FormEvent) => {
+  const handleAddItem = async (e: React.SubmitEvent) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, 'inventory'), {
+      const id = await addItem({
         itemName: name,
         quantity: Number(qty),
-        tags: ['New Row'], // Default tag example
-        lastUpdated: serverTimestamp() // Uses Firebase server time
-      });
+        tags: [],
+        lastUpdated: serverTimestamp(),
+        });
+      
       setName('');
       setQty(0);
       alert('Item added successfully!');
+      
     } catch (error) {
-      console.error("Error adding document: ", error);
+      // Any error from the database lands right here
+      console.error("Database failed:", error);
+      alert("Could not save item. Check your internet connection.");
     }
   };
+
 
   // Function to UPDATE an existing item's quantity (e.g., matching a button click)
   const handleUpdateQuantity = async (itemId: string, newQty: number) => {

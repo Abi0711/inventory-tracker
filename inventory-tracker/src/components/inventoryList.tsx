@@ -1,49 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import { db } from '../firebase'; // Path to your firebase config file
+import { db } from '../firebase';
 import { InventoryItem } from '../types/inventoryItem';
+import InventoryItemElement from './inventoryItemElement';
 
 export const InventoryList: React.FC = () => {
-  const [items, setItems] = useState<InventoryItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
+  // Real-time listener
   useEffect(() => {
-    // 1. Reference the 'inventory' collection in Firestore
-    const inventoryCollection = collection(db, 'inventory');
-    
-    // 2. Set up a query listener
-    const q = query(inventoryCollection);
-    
-    // 3. Listen for real-time updates
+    const q = query(collection(db, 'inventory'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const inventoryData: InventoryItem[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      })) as InventoryItem[];
-      
-      setItems(inventoryData);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching inventory: ", error);
-      setLoading(false);
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as InventoryItem[];
+      setInventory(data);
     });
-
-    // 4. Clean up the listener when the component unmounts
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <p>Loading inventory...</p>;
+  // Filter, useMemo because
+  const filteredItems = useMemo(() => {
+    // If search bar is blank, just show the whole inventory
+    if (!searchTerm.trim()) return inventory;
+
+    const lowerSearch = searchTerm.toLowerCase();
+
+    return inventory.filter((item) => {
+      // Check equivalent item name
+      const matchesName = item.itemName.toLowerCase().includes(lowerSearch);
+      //Check if any tags are equivalent
+      const matchesTags = item.tags.some(tag => tag.toLowerCase().includes(lowerSearch));
+
+      // Return true if either the name or a tag matches!
+      return matchesName || matchesTags;
+    });
+  }, [inventory, searchTerm]); // Only recalculate when the data or search box changes
 
   return (
-    <div>
-      <h2>Current Inventory</h2>
+    <div style={{ padding: '20px' }}>
+      <h2>Inventory Search</h2>
+      
+      {/* 4. The Search Bar Input */}
+      <input
+        type="text"
+        placeholder="Search by name or tag..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ padding: '8px', width: '300px', marginBottom: '20px' }}
+      />
+
+      {/* 5. Render the FILTERED list, not the master inventory */}
       <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <strong>{item.itemName}</strong> - Count: {item.quantity}
-            <div>Tags: {item.tags.join(', ')}</div>
-          </li>
-        ))}
+        {filteredItems.length === 0 ? (
+          <p>No items found matching "{searchTerm}"</p>
+        ) : (
+          filteredItems.map((item) => (
+            <InventoryItemElement inventoryItem={item}></InventoryItemElement>
+          ))
+        )}
       </ul>
     </div>
   );

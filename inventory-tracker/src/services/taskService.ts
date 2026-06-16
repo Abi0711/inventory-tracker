@@ -4,25 +4,17 @@ import { Task } from '../types/task';
 import { InventoryItem } from '../types/inventoryItem';
 
 // Create a new task
-export const addTask = async (task: Omit<Task, 'id'>): Promise<string> => {
-  try {
-    const docRef = await addDoc(collection(db, "tasks"), task);
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding task:", error);
-    throw error;
-  }
+export const addItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> => {
+  // If this fails, it automatically throws the error directly to your component
+  const docRef = await addDoc(collection(db, "inventory"), task);
+  return docRef.id;
 };
 
 // Create a new task
-export const addItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> => {
-  try {
-    const docRef = await addDoc(collection(db, "tasks"), task);
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding task:", error);
-    throw error;
-  }
+export const getItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> => {
+  // If this fails, it automatically throws the error directly to your component
+  const docRef = await addDoc(collection(db, "inventory"), task);
+  return docRef.id;
 };
 
 // Read a single task
@@ -40,7 +32,7 @@ export const getTask = async (taskId: string): Promise<Task | null> => {
   }
 };
 
-// Read all tasks for a user
+// Read all tasks for a user - TODO oconvert this to tags or smth
 export const getUserTasks = async (userId: string): Promise<Task[]> => {
   try {
     const q = query(collection(db, "tasks"), where("userId", "==", userId));

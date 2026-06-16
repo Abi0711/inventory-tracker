@@ -7,10 +7,18 @@ import InventoryItemElement from './inventoryItemElement';
 export const InventoryList: React.FC = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  // Real-time listener
+  const handleTagClick = (tag: string) => {
+    // Clear the search bar text so the tag filter takes effect visually
+    setSearchTerm(''); 
+    setSelectedTag(tag);
+  };
+
+  
   useEffect(() => {
     const q = query(collection(db, 'inventory'));
+    // Real-time listener of the database
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as InventoryItem[];
       setInventory(data);
@@ -20,27 +28,29 @@ export const InventoryList: React.FC = () => {
 
   // Filter, useMemo because
   const filteredItems = useMemo(() => {
-    // If search bar is blank, just show the whole inventory
-    if (!searchTerm.trim()) return inventory;
+    const lowerSearch = searchTerm.trim().toLowerCase();
 
-    const lowerSearch = searchTerm.toLowerCase();
+    if (lowerSearch) {
+      return inventory.filter((item) => {
+        const matchesName = item.itemName.toLowerCase().includes(lowerSearch);
+        const matchesTags = item.tags.some(tag => tag.toLowerCase().includes(lowerSearch));
+        return matchesName || matchesTags;
+      });
+    }
 
-    return inventory.filter((item) => {
-      // Check equivalent item name
-      const matchesName = item.itemName.toLowerCase().includes(lowerSearch);
-      //Check if any tags are equivalent
-      const matchesTags = item.tags.some(tag => tag.toLowerCase().includes(lowerSearch));
+    if (selectedTag) {
+      return inventory.filter((item) => 
+        item.tags.some(itemTag => itemTag.toLowerCase() === selectedTag.toLowerCase())
+      );
+    }
 
-      // Return true if either the name or a tag matches!
-      return matchesName || matchesTags;
-    });
-  }, [inventory, searchTerm]); // Only recalculate when the data or search box changes
+    return inventory;
 
-  return (
+  }, [inventory, searchTerm, selectedTag]);
+
+return (
     <div style={{ padding: '20px' }}>
       <h2>Inventory Search</h2>
-      
-      {/* 4. The Search Bar Input */}
       <input
         type="text"
         placeholder="Search by name or tag..."
@@ -48,17 +58,15 @@ export const InventoryList: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ padding: '8px', width: '300px', marginBottom: '20px' }}
       />
-
-      {/* 5. Render the FILTERED list, not the master inventory */}
-      <ul>
+      <div className="inventory-grid">
         {filteredItems.length === 0 ? (
           <p>No items found matching "{searchTerm}"</p>
         ) : (
           filteredItems.map((item) => (
-            <InventoryItemElement inventoryItem={item}></InventoryItemElement>
+            <InventoryItemElement inventoryItem={item} onTagClick={handleTagClick}></InventoryItemElement>
           ))
         )}
-      </ul>
+      </div>
     </div>
   );
 };

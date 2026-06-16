@@ -1,16 +1,26 @@
 import { InventoryItem } from "../types/inventoryItem";
-
+import './style.css'
 interface InventoryItemElementProps{
     inventoryItem: InventoryItem;
+    onTagClick: (tag: string) => void;
 }
-function InventoryItemElement({inventoryItem} : InventoryItemElementProps){
+
+function InventoryItemElement({inventoryItem, onTagClick} : InventoryItemElementProps){
     return (
-        <li key={inventoryItem.id} style={{ margin: '10px 0' }}>
-            <strong>{inventoryItem.itemName}</strong> (Qty: {inventoryItem.quantity})
-            <div style={{ fontSize: '0.85em', color: '#666' }}>
-            Tags: {inventoryItem.tags.join(', ')}
+        <div className="inventory-card">
+            <div className="card-header">
+                <h3 className="item-name">{inventoryItem.itemName}</h3>
+                <span className="quantity">{inventoryItem.quantity}</span>
             </div>
-        </li>
+            <p className="description">{inventoryItem.desc}</p>
+            <div className="tag-list">
+                {
+                    inventoryItem.tags.map((tag) => (
+                        <span className="tag" onClick={() => onTagClick(tag)} >{tag}</span>
+                    ))
+                }
+            </div>
+        </div>
     );
 }
 

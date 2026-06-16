@@ -1,0 +1,62 @@
+/* The main card wrapper */
+.inventory-card {
+  border: 1px solid #b3b3b3;
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 450px; /* Adjust this to fit your grid layout */
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Header layout: pushes name left and num right */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+/* Item Name styles */
+.item-name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Quantity (num) styles */
+.quantity {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333333;
+}
+
+/* Description text styles */
+.description {
+  margin: 0 0 16px 0;
+  font-size: 0.9rem;
+  color: #666666;
+  text-align: left;
+  line-height: 1.4;
+}
+
+/* Tag container: lays out badges horizontally */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap; /* Allows tags to drop to next line smoothly if there are too many */
+  gap: 8px;        /* Spacing between the tag boxes */
+}
+
+/* Individual tag boxes matching your sketch design */
+.tag {
+  display: inline-block;
+  border: 1.5px solid #8c8c8c;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: #8c8c8c;
+  background-color: #ffffff;
+  user-select: none;
+  cursor: pointer;
+}

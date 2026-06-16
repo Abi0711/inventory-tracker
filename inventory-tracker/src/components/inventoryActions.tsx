@@ -5,6 +5,7 @@ import { addItem } from '../services/taskService';
 
 export const InventoryActions: React.FC = () => {
   const [name, setName] = useState('');
+  const [desc, setDesc] = useState('');
   const [qty, setQty] = useState(0);
 
   const handleAddItem = async (e: React.SubmitEvent) => {
@@ -12,6 +13,7 @@ export const InventoryActions: React.FC = () => {
     try {
       const id = await addItem({
         itemName: name,
+        desc: desc,
         quantity: Number(qty),
         tags: [],
         lastUpdated: serverTimestamp(),
@@ -53,6 +55,13 @@ export const InventoryActions: React.FC = () => {
         placeholder="Item Name" 
         value={name} 
         onChange={(e) => setName(e.target.value)} 
+        required 
+      />
+        <input 
+        type="text" 
+        placeholder="Item Description" 
+        value={desc} 
+        onChange={(e) => setDesc(e.target.value)} 
         required 
       />
       <input 

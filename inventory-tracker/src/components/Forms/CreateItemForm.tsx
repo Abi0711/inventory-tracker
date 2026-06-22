@@ -7,7 +7,6 @@ function CreateItemForm() {
     try {
       await addItem(data);
       alert('Item added successfully!');
-
     } catch (error) {
       // Any error from the database lands right here
       console.error("Database failed:", error);

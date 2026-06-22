@@ -5,10 +5,10 @@ function InventoryItemDashboard() {
 
     return (
         <div className="inventory-dashboard">
-        <header className="App-header">
-            <CreateItemForm/>
-            <InventoryItemList/>
-        </header>
+            <header className="App-header">
+                <CreateItemForm />
+                <InventoryItemList />
+            </header>
         </div>
     );
 }

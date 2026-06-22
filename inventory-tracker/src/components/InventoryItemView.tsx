@@ -1,12 +1,13 @@
 import { InventoryItem } from "../types/inventoryItem";
 import ItemEditToolBar from "./ItemEditToolBar";
 import './style.css'
-interface InventoryItemViewProps{
+
+interface InventoryItemViewProps {
     inventoryItem: InventoryItem;
     onTagClick: (tag: string) => void;
 }
 
-function InventoryItemView({inventoryItem, onTagClick} : InventoryItemViewProps){
+function InventoryItemView({ inventoryItem, onTagClick }: InventoryItemViewProps) {
     return (
         <div className="inventory-card">
             <div className="card-header">
@@ -21,7 +22,7 @@ function InventoryItemView({inventoryItem, onTagClick} : InventoryItemViewProps)
                     ))
                 }
             </div>
-            <ItemEditToolBar inventoryItem={inventoryItem}/>
+            <ItemEditToolBar inventoryItem={inventoryItem} />
         </div>
     );
 }

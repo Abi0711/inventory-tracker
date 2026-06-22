@@ -1,4 +1,4 @@
-.PopUp{
+.PopUp {
   position: fixed;
 
   left: 20%;
@@ -21,6 +21,6 @@
   padding-bottom: 20px;
 }
 
-.close-popup-button{
-    margin-top: 20px;
+.close-popup-button {
+  margin-top: 20px;
 }

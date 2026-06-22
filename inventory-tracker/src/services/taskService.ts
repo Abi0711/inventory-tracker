@@ -15,15 +15,15 @@ export const addItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> 
 };
 
 
-export const getItemById = async (id: string): Promise<InventoryItem| null> => {
+export const getItemById = async (id: string): Promise<InventoryItem | null> => {
 
   try {
     const docRef = doc(db, "inventory", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { 
-        id: docSnap.id, 
-        ...docSnap.data() 
+      return {
+        id: docSnap.id,
+        ...docSnap.data()
       } as InventoryItem;
     } else {
       console.log("No inventory item found with that ID!");
@@ -44,7 +44,7 @@ export const updateItem = async (id: string, updates: Partial<InventoryItem>): P
   }
 };
 
-export const updateQuantity = async (id: string, amount:number): Promise<void> => {
+export const updateQuantity = async (id: string, amount: number): Promise<void> => {
   try {
     await updateDoc(doc(db, "inventory", id), {
       quantity: increment(amount)

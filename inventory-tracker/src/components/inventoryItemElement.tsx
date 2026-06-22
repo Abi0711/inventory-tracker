@@ -12,11 +12,11 @@ function InventoryItemElement({inventoryItem, onTagClick} : InventoryItemElement
                 <h3 className="item-name">{inventoryItem.itemName}</h3>
                 <span className="quantity">{inventoryItem.quantity}</span>
             </div>
-            <p className="description">{inventoryItem.desc}</p>
+            <p className="description">{inventoryItem.description}</p>
             <div className="tag-list">
                 {
                     inventoryItem.tags.map((tag) => (
-                        <span className="tag" onClick={() => onTagClick(tag)} >{tag}</span>
+                        <span key={tag} className="tag" onClick={() => onTagClick(tag)} >{tag}</span>
                     ))
                 }
             </div>

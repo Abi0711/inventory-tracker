@@ -1,12 +1,16 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "firebase/firestore";
+import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where, serverTimestamp } from "firebase/firestore";
 import { Task } from '../types/task';
 import { InventoryItem } from '../types/inventoryItem';
 
 // Create a new task
 export const addItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> => {
+  const finalDocData = {
+    ...task,
+    lastUpdated: serverTimestamp()
+  };
   // If this fails, it automatically throws the error directly to your component
-  const docRef = await addDoc(collection(db, "inventory"), task);
+  const docRef = await addDoc(collection(db, "inventory"), finalDocData);
   return docRef.id;
 };
 
@@ -17,17 +21,11 @@ export const getItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> 
   return docRef.id;
 };
 
-// Read a single task
-export const getTask = async (taskId: string): Promise<Task | null> => {
+export const updateItem = async (taskName: string, updates: Partial<InventoryItem>): Promise<void> => {
   try {
-    const taskDoc = await getDoc(doc(db, "tasks", taskId));
-    if (taskDoc.exists()) {
-      return { id: taskDoc.id, ...taskDoc.data() } as Task;
-    } else {
-      return null;
-    }
+    await updateDoc(doc(db, "inventory", taskName), updates);
   } catch (error) {
-    console.error("Error getting task:", error);
+    console.error("Error updating item:", error);
     throw error;
   }
 };

@@ -3,6 +3,7 @@ import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { InventoryItem } from '../types/inventoryItem';
 import InventoryItemElement from './inventoryItemElement';
+import ItemToolBar from './itemToolBar';
 
 export const InventoryList: React.FC = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -14,7 +15,6 @@ export const InventoryList: React.FC = () => {
     setSearchTerm(''); 
     setSelectedTag(tag);
   };
-
   
   useEffect(() => {
     const q = query(collection(db, 'inventory'));
@@ -26,7 +26,7 @@ export const InventoryList: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  // Filter, useMemo because
+  // Filter, useMemo because its a function
   const filteredItems = useMemo(() => {
     const lowerSearch = searchTerm.trim().toLowerCase();
 
@@ -60,10 +60,15 @@ return (
       />
       <div className="inventory-grid">
         {filteredItems.length === 0 ? (
-          <p>No items found matching "{searchTerm}"</p>
+          <p key={"none"}>No items found matching "{searchTerm}"</p>
         ) : (
           filteredItems.map((item) => (
-            <InventoryItemElement inventoryItem={item} onTagClick={handleTagClick}></InventoryItemElement>
+
+            <div key={item.id}>
+              <InventoryItemElement inventoryItem={item} onTagClick={handleTagClick}></InventoryItemElement>
+              <ItemToolBar inventoryItem={item}></ItemToolBar>
+            </div>
+
           ))
         )}
       </div>

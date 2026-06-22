@@ -60,3 +60,68 @@
   user-select: none;
   cursor: pointer;
 }
+
+/* The main horizontal bar container */
+.toolbar {
+  display: flex;
+  align-items: center; /* Vertically centers the buttons next to each other */
+  gap: 12px;           /* Spacing between edit, delete, and the arrows group */
+  background-color: #ffffff;
+  padding: 8px;
+}
+
+/* Base styling for ALL buttons in your toolbar */
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1.5px solid #8c8c8c;
+  color: #8c8c8c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Specific size for the square Edit and Delete buttons */
+.edit-button,
+.delete-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px; /* Gives it that soft square look from your sketch */
+}
+
+/* Match the internal icon sizing */
+.toolbar button svg {
+  font-size: 1.25rem; /* Adjusts the size of your React Icons */
+}
+
+/* Nested vertical column container for the up/down buttons */
+.up-down-arrows {
+  display: flex;
+  flex-direction: column; /* Stacks the two arrows vertically */
+  gap: 4px;              /* Subtle spacing between the two chevrons */
+}
+
+/* Special styling for the up and down chevron buttons */
+.up-button,
+.down-button {
+  width: 36px;
+  height: 20px;
+  border-radius: 6px;
+  border: none !important; /* Optional: If you prefer seamless arrows like the image */
+  padding: 0;
+}
+
+/* Hover effects to make it feel like a professional app */
+.toolbar button:hover {
+  border-color: #333333;
+  color: #333333;
+  background-color: #f5f5f5;
+}
+
+/* Delete hover option: subtle red accent tint */
+.delete-button:hover {
+  border-color: #d32f2f;
+  color: #d32f2f;
+  background-color: #ffebee;
+}

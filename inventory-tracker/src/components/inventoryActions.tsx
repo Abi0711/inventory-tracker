@@ -13,7 +13,7 @@ export const InventoryActions: React.FC = () => {
     try {
       const id = await addItem({
         itemName: name,
-        desc: desc,
+        description: desc,
         quantity: Number(qty),
         tags: [],
         lastUpdated: serverTimestamp(),

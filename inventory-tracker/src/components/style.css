@@ -1,9 +1,11 @@
-/* The main card wrapper */
+/* 1. Add position: relative so the toolbar can anchor to this card's boundaries */
 .inventory-card {
+  position: relative; 
   border: 1px solid #b3b3b3;
   border-radius: 16px;
   padding: 16px;
-  max-width: 450px; /* Adjust this to fit your grid layout */
+  padding-bottom: 50px; /* CRUCIAL: Creates blank buffer room at the bottom so tags don't get covered by the toolbar */
+  max-width: 450px; 
   background-color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -61,13 +63,16 @@
   cursor: pointer;
 }
 
-/* The main horizontal bar container */
+/* 2. Absolute positioning to anchor it perfectly to the bottom right corner */
 .toolbar {
+  position: absolute;
+  bottom: 12px;  /* Distance from the bottom edge */
+  right: 12px;   /* Distance from the right edge */
   display: flex;
-  align-items: center; /* Vertically centers the buttons next to each other */
-  gap: 12px;           /* Spacing between edit, delete, and the arrows group */
-  background-color: #ffffff;
-  padding: 8px;
+  align-items: center; 
+  gap: 8px;      /* Slightly smaller gap to match the compact design */
+  background-color: transparent; /* Seamless blend into the card white background */
+  padding: 0;
 }
 
 /* Base styling for ALL buttons in your toolbar */
@@ -81,13 +86,17 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
+/* 4. Scale down the internal icon sizing */
+.toolbar button svg {
+  font-size: 1rem; /* Smaller icons to match the compact frame */
+}
 
-/* Specific size for the square Edit and Delete buttons */
+/* 3. Scale down the main buttons (Edit & Delete) */
 .edit-button,
 .delete-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px; /* Gives it that soft square look from your sketch */
+  width: 32px !important;   /* Shrunk down from 44px */
+  height: 32px !important;  /* Shrunk down from 44px */
+  border-radius: 8px;       /* Slightly tighter corner radius for smaller boxes */
 }
 
 /* Match the internal icon sizing */
@@ -95,23 +104,22 @@
   font-size: 1.25rem; /* Adjusts the size of your React Icons */
 }
 
-/* Nested vertical column container for the up/down buttons */
+/* 5. Scale down the nested vertical arrow column */
 .up-down-arrows {
   display: flex;
-  flex-direction: column; /* Stacks the two arrows vertically */
-  gap: 4px;              /* Subtle spacing between the two chevrons */
+  flex-direction: column; 
+  gap: 2px;              
 }
 
-/* Special styling for the up and down chevron buttons */
+/* 6. Scale down the chevron sizing */
 .up-button,
 .down-button {
-  width: 36px;
-  height: 20px;
-  border-radius: 6px;
-  border: none !important; /* Optional: If you prefer seamless arrows like the image */
+  width: 24px !important;   /* Shrunk down from 36px */
+  height: 14px !important;  /* Shrunk down from 20px */
+  border-radius: 4px;
+  border: none !important; 
   padding: 0;
 }
-
 /* Hover effects to make it feel like a professional app */
 .toolbar button:hover {
   border-color: #333333;

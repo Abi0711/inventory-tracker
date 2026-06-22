@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where, serverTimestamp, increment } from "firebase/firestore";
 import { Task } from '../types/task';
 import { InventoryItem } from '../types/inventoryItem';
 
@@ -44,14 +44,27 @@ export const updateItem = async (id: string, updates: Partial<InventoryItem>): P
   }
 };
 
-export const deleteTask = async (taskId: string): Promise<void> => {
+export const updateQuantity = async (id: string, amount:number): Promise<void> => {
   try {
-    await deleteDoc(doc(db, "tasks", taskId));
+    await updateDoc(doc(db, "inventory", id), {
+      quantity: increment(amount)
+    });
   } catch (error) {
-    console.error("Error deleting task:", error);
+    console.error("Error updating item:", error);
     throw error;
   }
 };
+
+export const deleteItem = async (id: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "inventory", id));
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    throw error;
+  }
+};
+
+
 
 // Read all tasks for a user - TODO oconvert this to tags or smth
 export const getUserTasks = async (userId: string): Promise<Task[]> => {
@@ -64,15 +77,3 @@ export const getUserTasks = async (userId: string): Promise<Task[]> => {
     throw error;
   }
 };
-
-// Update a task
-export const updateTask = async (taskId: string, updates: Partial<Task>): Promise<void> => {
-  try {
-    await updateDoc(doc(db, "tasks", taskId), updates);
-  } catch (error) {
-    console.error("Error updating task:", error);
-    throw error;
-  }
-};
-
-// Delete a task

@@ -1,4 +1,5 @@
 import { InventoryItem } from "../types/inventoryItem";
+import ItemEditToolBar from "./ItemEditToolBar";
 import './style.css'
 interface InventoryItemViewProps{
     inventoryItem: InventoryItem;
@@ -20,6 +21,7 @@ function InventoryItemView({inventoryItem, onTagClick} : InventoryItemViewProps)
                     ))
                 }
             </div>
+            <ItemEditToolBar inventoryItem={inventoryItem}/>
         </div>
     );
 }

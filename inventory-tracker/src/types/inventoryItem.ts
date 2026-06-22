@@ -4,5 +4,5 @@ export interface InventoryItem {
   description: string;
   quantity: number;
   tags: string[];
-  lastUpdated?: any; // You can use Firestore's Timestamp type here
+  lastUpdated?: any;
 }

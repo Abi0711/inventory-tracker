@@ -3,7 +3,6 @@ import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { InventoryItem } from '../types/inventoryItem';
 import InventoryItemView from './InventoryItemView';
-import ItemEditToolBar from './ItemEditToolBar';
 
 export const InventoryItemList: React.FC = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -49,7 +48,7 @@ export const InventoryItemList: React.FC = () => {
   }, [inventory, searchTerm, selectedTag]);
 
 return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <h2>Inventory Search</h2>
       <input
         type="text"
@@ -63,12 +62,9 @@ return (
           <p key={"none"}>No items found matching "{searchTerm}"</p>
         ) : (
           filteredItems.map((item) => (
-
-            <div key={item.id}>
-              <InventoryItemView inventoryItem={item} onTagClick={handleTagClick}></InventoryItemView>
-              <ItemEditToolBar inventoryItem={item}></ItemEditToolBar>
+            <div className="item-view" key={item.id}>
+                <InventoryItemView inventoryItem={item} onTagClick={handleTagClick}></InventoryItemView>              
             </div>
-
           ))
         )}
       </div>

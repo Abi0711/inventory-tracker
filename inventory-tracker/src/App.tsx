@@ -1,16 +1,12 @@
-import React from 'react';
 import './App.css';
-import { collection, addDoc } from "firebase/firestore"; 
-import { InventoryActions } from './components/inventoryActions';
-import { InventoryList } from './components/inventoryList';
+import InventoryItemDashboard from './components/InventoryItemDashboard';
 
 function App() {
   
   return (
     <div className="App">
       <header className="App-header">
-        <InventoryActions/>
-        <InventoryList/>
+        <InventoryItemDashboard/>
       </header>
     </div>
   );

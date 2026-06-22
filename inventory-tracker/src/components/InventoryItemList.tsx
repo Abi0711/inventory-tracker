@@ -2,10 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { InventoryItem } from '../types/inventoryItem';
-import InventoryItemElement from './inventoryItemElement';
-import ItemToolBar from './itemToolBar';
+import InventoryItemView from './InventoryItemView';
+import ItemEditToolBar from './ItemEditToolBar';
 
-export const InventoryList: React.FC = () => {
+export const InventoryItemList: React.FC = () => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -65,8 +65,8 @@ return (
           filteredItems.map((item) => (
 
             <div key={item.id}>
-              <InventoryItemElement inventoryItem={item} onTagClick={handleTagClick}></InventoryItemElement>
-              <ItemToolBar inventoryItem={item}></ItemToolBar>
+              <InventoryItemView inventoryItem={item} onTagClick={handleTagClick}></InventoryItemView>
+              <ItemEditToolBar inventoryItem={item}></ItemEditToolBar>
             </div>
 
           ))

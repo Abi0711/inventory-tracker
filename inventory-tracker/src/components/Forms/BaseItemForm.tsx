@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { InventoryItem } from '../types/inventoryItem'
+import { InventoryItem } from '../../types/inventoryItem'
 
 interface BaseItemFormProps {
     initialData?: InventoryItem | null;

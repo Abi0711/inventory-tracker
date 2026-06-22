@@ -6,9 +6,9 @@
 
   width: 60%;
 
-  border: 2px solid blue;
+  border: 2px solid burlywood;
   border-radius: 1em;
-  box-shadow: -2px 5px 5px blue;
+  box-shadow: -2px 5px 5px burlywood;
 
   background-color: white;
 
@@ -18,4 +18,9 @@
   align-items: center;
 
   color: #011627;
+  padding-bottom: 20px;
+}
+
+.close-popup-button{
+    margin-top: 20px;
 }

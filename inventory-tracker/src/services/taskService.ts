@@ -14,18 +14,41 @@ export const addItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> 
   return docRef.id;
 };
 
-// Create a new task
-export const getItem = async (task: Omit<InventoryItem, 'id'>): Promise<string> => {
-  // If this fails, it automatically throws the error directly to your component
-  const docRef = await addDoc(collection(db, "inventory"), task);
-  return docRef.id;
+
+export const getItemById = async (id: string): Promise<InventoryItem| null> => {
+
+  try {
+    const docRef = doc(db, "inventory", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { 
+        id: docSnap.id, 
+        ...docSnap.data() 
+      } as InventoryItem;
+    } else {
+      console.log("No inventory item found with that ID!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching document by ID:", error);
+    throw error;
+  }
 };
 
-export const updateItem = async (taskName: string, updates: Partial<InventoryItem>): Promise<void> => {
+export const updateItem = async (id: string, updates: Partial<InventoryItem>): Promise<void> => {
   try {
-    await updateDoc(doc(db, "inventory", taskName), updates);
+    await updateDoc(doc(db, "inventory", id), updates);
   } catch (error) {
     console.error("Error updating item:", error);
+    throw error;
+  }
+};
+
+export const deleteTask = async (taskId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "tasks", taskId));
+  } catch (error) {
+    console.error("Error deleting task:", error);
     throw error;
   }
 };
@@ -53,11 +76,3 @@ export const updateTask = async (taskId: string, updates: Partial<Task>): Promis
 };
 
 // Delete a task
-export const deleteTask = async (taskId: string): Promise<void> => {
-  try {
-    await deleteDoc(doc(db, "tasks", taskId));
-  } catch (error) {
-    console.error("Error deleting task:", error);
-    throw error;
-  }
-};

@@ -1,11 +1,11 @@
 import { InventoryItem } from "../types/inventoryItem";
 import './style.css'
-interface InventoryItemElementProps{
+interface InventoryItemViewProps{
     inventoryItem: InventoryItem;
     onTagClick: (tag: string) => void;
 }
 
-function InventoryItemElement({inventoryItem, onTagClick} : InventoryItemElementProps){
+function InventoryItemView({inventoryItem, onTagClick} : InventoryItemViewProps){
     return (
         <div className="inventory-card">
             <div className="card-header">
@@ -24,4 +24,4 @@ function InventoryItemElement({inventoryItem, onTagClick} : InventoryItemElement
     );
 }
 
-export default InventoryItemElement;
+export default InventoryItemView;
